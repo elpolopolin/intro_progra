@@ -15,6 +15,13 @@ def pertenece (s:list[int],e:int) -> bool :
             return True
     return False
 print(pertenece([1,"polo",9,4,5], "polo"))
+#pertenece recursivo
+def pertenece_recursivo(lista:list[int], e: int) -> bool: 
+    if len(lista) == 0: 
+        return False
+    cabeza_lista : int = lista.pop(0)
+    return cabeza_lista == e or pertenece_recursivo(lista, e)
+print("pertenece recursivo", pertenece_recursivo([1,2,3,4,10,2], 0)) #pop devuelve el primer elemento de la lista y a su vez lo quita de la lista
 #1.2
 def divideAtodos(s:list, e:int) -> bool : 
     for i in range (len(s)) :
@@ -113,17 +120,95 @@ def esPalindromo (s:str) -> bool :
     return (palabraReves == s)
 
 print("esee es palindromo", esPalindromo("esee"))
+
 #1.11
-def igualesconsecutivos (s:list[int]) ->bool :
-    i= 0
-    consecutivos =0
-    while i< (len(s)-1) and consecutivos <3 :
-        if (s[i] == s[(i+1)]):
-            consecutivos +=1
+def igualesconsecutivos (s:list[int]) -> bool :
+    actual = s[0]
+    contador = 1
+    for i in range(1, len(s)):
+        if s[i] == actual:
+            contador += 1
+            if contador == 3:
+                return True
+        else:
+            actual = s[i]
+            contador = 1
+    return False
+
+print(igualesconsecutivos([1,2,1,1,2,1,0,1,2,10,10,10]))
+
+#1.12
+def quitarRepetidos (x: str, s:list[str]) -> list[str] :
+    listaSinXrepetidos = []
+    for i in range(len(s)):
+        if (x != s[i]):
+            listaSinXrepetidos.append(s[i])
+    return listaSinXrepetidos
+
+def tres_vocales_distintas (s:list[str]):
+    vocalesUsadas = []
+    i = 0
+    while (i < len(s)) :
+        if s[i].lower() in ['a', 'e', 'i', 'o', 'u'] :
+            vocalesUsadas.append(s[i].lower())
+            s = quitarRepetidos(s[i], s)
+        i += 1
+    return (len(vocalesUsadas) >= 3)
+
+palabra = input("escriba una palabra para ver si tiene 3 vocales:")
+print(tres_vocales_distintas(palabra))
+#print(quitarRepetidos('a',"holaa"))
+
+#1.13
+def contarSecuenciaOrdenada (s:list[int]) -> int :
+    secuenciaOrdenada = 1
+    x = 0
+    for i in range(1, len(s)):
+        if (s[x] < s[i]) :
+            secuenciaOrdenada += 1
         else :
-            consecutivos =0
+            return secuenciaOrdenada
+    return secuenciaOrdenada
+def quitarPrimerosX (x:int, s:list[int]) -> list :
+    nuevalista = []
+    for i in range(x,len(s)):
+        nuevalista.append(s[i])
+    return nuevalista
+#print(quitarPrimerosX(3,[1,2,3,4,5,6]))
+
+def secuencia_ordenada_mas_larga (s:list[int]) -> int :
+    secuenciaOrdenadaMayor = 0
+    i = 0
+    while i < (len(s)) :
+        secuenciaOrdenadaAcomparar = contarSecuenciaOrdenada(s)
+        #print(secuenciaOrdenadaAcomparar)
+        if (secuenciaOrdenadaMayor < secuenciaOrdenadaAcomparar):
+            secuenciaOrdenadaMayor = secuenciaOrdenadaAcomparar
+            s = quitarPrimerosX(secuenciaOrdenadaAcomparar, s)
         i+=1
-    return (consecutivos == 3)
-print(igualesconsecutivos([1,2,1,1,2,1,1,1]))
-          
+    return secuenciaOrdenadaMayor
+
+print(secuencia_ordenada_mas_larga([1,2,3,1,2,3,4,5]))
+     
+#1.13 pos secuencia mas larga
+
+def pos_secuencia_mas_larga(s: list[int]) -> int:
+    if not s:
+        return -1  # lista vacía
+    max_long = 1
+    max_pos = 0
+    i = 0
+    while i < len(s):
+        j = i
+        while j + 1 < len(s) and s[j] < s[j + 1]:
+            j += 1
+        long_actual = j - i + 1
+        if long_actual > max_long:
+            max_long = long_actual
+            max_pos = i
+
+        i = j + 1  # saltamos al próximo inicio de secuencia
+
+    return max_pos
+    
         
