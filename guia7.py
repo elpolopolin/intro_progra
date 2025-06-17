@@ -211,4 +211,5 @@ def pos_secuencia_mas_larga(s: list[int]) -> int:
 
     return max_pos
     
+
         
